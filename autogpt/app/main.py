@@ -57,11 +57,11 @@ def run_auto_gpt(
     ai_role: Optional[str] = None,
     ai_goals: tuple[str] = tuple(),
 ):
+    
     config = ConfigBuilder.build_config_from_env(workdir=working_directory)
 
     # TODO: fill in llm values here
     check_openai_api_key(config)
-
     create_config(
         config,
         continuous,
@@ -78,7 +78,6 @@ def run_auto_gpt(
         allow_downloads,
         skip_news,
     )
-
     # Set up logging module
     configure_logging(config)
 
@@ -148,7 +147,6 @@ def run_auto_gpt(
 
     # Create a CommandRegistry instance and scan default folder
     command_registry = CommandRegistry.with_command_modules(COMMAND_CATEGORIES, config)
-
     ai_config = construct_main_ai_config(
         config,
         name=ai_name,
@@ -156,11 +154,13 @@ def run_auto_gpt(
         goals=ai_goals,
     )
     # print(prompt)
+    print('ASD_________________________________________________________')
 
     # Initialize memory and make sure it is empty.
     # this is particularly important for indexing and referencing pinecone memory
     memory = get_memory(config)
     memory.clear()
+    print('ASD_________________________________________________________')
     print_attribute("Configured Memory", memory.__class__.__name__)
 
     print_attribute("Configured Browser", config.selenium_web_browser)
