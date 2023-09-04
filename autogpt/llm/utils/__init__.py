@@ -159,10 +159,11 @@ def create_chat_completion(
     # Print full prompt to debug log
     logger.debug(prompt.dump())
 
-    response = iopenai.create_chat_completion(
+    '''response = iopenai.create_chat_completion(
         messages=prompt.raw(),
         **chat_completion_kwargs,
     )
+    
     logger.debug(f"Response: {response}")
 
     if hasattr(response, "error"):
@@ -170,15 +171,20 @@ def create_chat_completion(
         raise RuntimeError(response.error)
 
     first_message: ResponseMessageDict = response.choices[0].message
-    content: str | None = first_message.get("content")
-    function_call: FunctionCallDict | None = first_message.get("function_call")
+    
+    content: str | None = first_message.get("content")'''
+    with open('llm_response.txt', 'r') as openfile:
+                # Reading from json file
+                content = openfile.read()
+    print('loaded response:')
+    print(content)
+    function_call = None
 
     for plugin in config.plugins:
         if not plugin.can_handle_on_response():
             continue
         # TODO: function call support in plugin.on_response()
         content = plugin.on_response(content)
-
     return ChatModelResponse(
         model_info=OPEN_AI_CHAT_MODELS[model],
         content=content,

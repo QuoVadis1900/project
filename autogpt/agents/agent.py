@@ -120,7 +120,6 @@ class Agent(ContextMixin, WorkspaceMixin, WatchdogMixin, BaseAgent):
 
     def on_before_think(self, *args, **kwargs) -> ChatSequence:
         prompt = super().on_before_think(*args, **kwargs)
-
         self.log_cycle_handler.log_count_within_cycle = 0
         self.log_cycle_handler.log_cycle(
             self.ai_config.ai_name,
@@ -229,7 +228,7 @@ class Agent(ContextMixin, WorkspaceMixin, WatchdogMixin, BaseAgent):
 
         # Update action history
         self.event_history.register_result(result)
-
+        
         return result
 
     def parse_and_process_response(
@@ -258,8 +257,8 @@ class Agent(ContextMixin, WorkspaceMixin, WatchdogMixin, BaseAgent):
         command_name, arguments = extract_command(
             assistant_reply_dict, llm_response, self.config
         )
-        response = command_name, arguments, assistant_reply_dict
 
+        response = command_name, arguments, assistant_reply_dict
         self.log_cycle_handler.log_cycle(
             self.ai_config.ai_name,
             self.created_at,

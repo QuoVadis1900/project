@@ -154,13 +154,11 @@ def run_auto_gpt(
         goals=ai_goals,
     )
     # print(prompt)
-    print('ASD_________________________________________________________')
 
     # Initialize memory and make sure it is empty.
     # this is particularly important for indexing and referencing pinecone memory
     memory = get_memory(config)
     memory.clear()
-    print('ASD_________________________________________________________')
     print_attribute("Configured Memory", memory.__class__.__name__)
 
     print_attribute("Configured Browser", config.selenium_web_browser)
@@ -274,7 +272,6 @@ def run_interaction_loop(
         ###############
         # Print the assistant's thoughts and the next command to the user.
         update_user(config, ai_config, command_name, command_args, assistant_reply_dict)
-
         ##################
         # Get user input #
         ##################
@@ -316,7 +313,6 @@ def run_interaction_loop(
         else:
             user_input = ""
             # First log new-line so user can differentiate sections better in console
-            print()
             if cycles_remaining != math.inf:
                 # Print authorized commands left value
                 print_attribute(

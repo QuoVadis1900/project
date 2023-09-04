@@ -132,6 +132,9 @@ class BaseAgent(metaclass=ABCMeta):
 
         prompt: ChatSequence = self.construct_prompt(instruction, thought_process_id)
         prompt = self.on_before_think(prompt, thought_process_id, instruction)
+        with open("prompt.txt", "w") as outfile:
+                outfile.write(str(prompt.raw()))
+        input("Press Enter to continue...")
         raw_response = create_chat_completion(
             prompt,
             self.config,
@@ -195,7 +198,6 @@ class BaseAgent(metaclass=ABCMeta):
             self.llm.name,
             [Message("system", self.system_prompt)] + prepend_messages,
         )
-
         if with_message_history:
             # Reserve tokens for messages to be appended later, if any
             reserve_tokens += self.message_history.max_summary_tlength
