@@ -46,27 +46,22 @@ def sanitize_path_arg(
             given_path: str | Path | None = kwargs.get(
                 arg_name, len(args) > arg_index and args[arg_index] or None
             )
-            print(f'given_path: {given_path} ')
             if given_path:
-                if type(given_path) == str:
+                '''if type(given_path) == str:
                     # Fix workspace path from output in docker environment
-                    given_path = re.sub(r"^\/workspace", ".", given_path)
-                    print(f'given_path re: {given_path}')
-
+                    given_path = re.sub(r"^\/workspace", ".", given_path)'''
 
                 if given_path in {"", "/", "."}:
                     sanitized_path = agent.workspace.root
                 else:
                     sanitized_path = agent.workspace.get_path(given_path)
-                    print(f'sanitized_path: {sanitized_path}')
 
                 # Make path relative if possible
                 if make_relative and sanitized_path.is_relative_to(
                     agent.workspace.root
                 ):
-                    print(f'before path: {sanitized_path}')
                     sanitized_path = sanitized_path.relative_to(agent.workspace.root)
-                    print(f'sanitized_path: {sanitized_path}')
+
                 if arg_name in kwargs:
                     kwargs[arg_name] = sanitized_path
                 else:
