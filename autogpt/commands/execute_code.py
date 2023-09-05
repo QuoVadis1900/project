@@ -54,14 +54,15 @@ def execute_python_code(code: str, agent: Agent) -> str:
     Returns:
         str: The STDOUT captured from the code when it ran
     """
-
+    print('agent.workspace.root')
+    print(agent.workspace.root)
     tmp_code_file = NamedTemporaryFile(
         "w", dir=agent.workspace.root, suffix=".py", encoding="utf-8"
     )
     tmp_code_file.write(code)
     tmp_code_file.flush()
-
     try:
+        print(f'tmp_code_file.name: {tmp_code_file.name}')
         return execute_python_file(tmp_code_file.name, agent)
     except Exception as e:
         raise CommandExecutionError(*e.args)
@@ -91,6 +92,8 @@ def execute_python_file(filename: Path, agent: Agent) -> str:
     Returns:
         str: The output of the file
     """
+    print(f'file path in execute: {filename}')
+
     logger.info(
         f"Executing python file '{filename}' in working directory '{agent.config.workspace_path}'"
     )
@@ -98,7 +101,7 @@ def execute_python_file(filename: Path, agent: Agent) -> str:
     if not str(filename).endswith(".py"):
         raise InvalidArgumentError("Invalid file type. Only .py files are allowed.")
 
-    file_path = filename
+    file_path = os.path.normpath(filename)
     if not file_path.is_file():
         # Mimic the response that you get from the command line so that it's easier to identify
         raise FileNotFoundError(

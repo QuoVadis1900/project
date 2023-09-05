@@ -99,7 +99,6 @@ def is_duplicate_operation(
     # Make the file path into a relative path if possible
     with contextlib.suppress(ValueError):
         file_path = file_path.relative_to(agent.workspace.root)
-
     state = file_operations_state(agent.config.file_logger_path)
     if operation == "delete" and str(file_path) not in state:
         return True
@@ -222,6 +221,7 @@ def write_to_file(filename: Path, contents: str, agent: Agent) -> str:
         raise DuplicateOperationError(f"File {filename.name} has already been updated.")
 
     directory = os.path.dirname(filename)
+    print(f'dir name: {directory}')
     os.makedirs(directory, exist_ok=True)
     with open(filename, "w", encoding="utf-8") as f:
         f.write(contents)
