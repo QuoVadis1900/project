@@ -176,8 +176,6 @@ def create_chat_completion(
     with open('llm_response.txt', 'r') as openfile:
                 # Reading from json file
                 content = openfile.read()
-    print('loaded response:')
-    print(content)
     function_call = None
 
     for plugin in config.plugins:
