@@ -22,7 +22,7 @@ from autogpt.app.utils import (
     get_legal_warning,
     markdown_to_ansi_style,
 )
-from autogpt.commands import COMMAND_CATEGORIES
+from autogpt.commands import COMMAND_CATEGORIES, COMMAND_CATEGORIES_MINIMAL
 from autogpt.config import AIConfig, Config, ConfigBuilder, check_openai_api_key
 from autogpt.llm.api_manager import ApiManager
 from autogpt.logs.config import configure_chat_plugins, configure_logging
@@ -146,14 +146,13 @@ def run_auto_gpt(
     configure_chat_plugins(config)
 
     # Create a CommandRegistry instance and scan default folder
-    command_registry = CommandRegistry.with_command_modules(COMMAND_CATEGORIES, config)
+    command_registry = CommandRegistry.with_command_modules(COMMAND_CATEGORIES_MINIMAL, config)
     ai_config = construct_main_ai_config(
         config,
         name=ai_name,
         role=ai_role,
         goals=ai_goals,
     )
-    # print(prompt)
 
     # Initialize memory and make sure it is empty.
     # this is particularly important for indexing and referencing pinecone memory

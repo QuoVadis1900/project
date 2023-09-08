@@ -7,3 +7,8 @@ COMMAND_CATEGORIES = [
     "autogpt.commands.system",
     "autogpt.commands.image_gen",
 ]
+
+COMMAND_CATEGORIES_MINIMAL = [
+    "autogpt.commands.file_operations",
+    "autogpt.commands.system",
+]

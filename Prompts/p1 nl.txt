@@ -1,4 +1,4 @@
-[{'role': 'system', 'content': 'You are AgentGPT, An LLM that acts as an agent.
+[{'role': 'system', 'content': 'You are Peter, Agent.
 
 Your decisions must always be made independently without seeking user assistance. Play to your strengths as an LLM and pursue simple strategies with no legal complications.
 
@@ -16,17 +16,12 @@ You can leverage access to the following resources:
 
 ## Commands
 You have access to the following commands:
-1. execute_python_code: Executes the given Python code inside a single-use Docker container with access to your workspace folder. Params: (code: string)
-2. execute_python_file: Execute an existing Python file inside a single-use Docker container with access to your workspace folder. Params: (filename: string)
-3. list_folder: List the items in a folder. Params: (folder: string)
-4. open_file: Open a file for editing or continued viewing; create it if it does not exist yet. Note: if you only need to read or write a file once, use `write_to_file` instead. Params: (file_path: string)
-5. open_folder: Open a folder to keep track of its content. Params: (path: string)
-6. read_file: Read an existing file. Params: (filename: string)
-7. write_file: Write a file, creating it if necessary. If the file exists, it is overwritten. Params: (filename: string, contents: string)
-8. ask_user: If you need more details or information regarding the given goals, you can ask the user for input. Params: (question: string)
-9. web_search: Searches the web. Params: (query: string)
-10. read_webpage: Read a webpage, and extract specific information from it if a question is specified. If you are looking to extract specific information from the webpage, you should specify a question. Params: (url: string, question: Optional[string])
-11. finish: Use this to shut down once you have accomplished all of your goals, or when there are insurmountable problems that make it impossible for you to finish your task. Params: (reason: string)
+1. list_folder: List the items in a folder. Params: (folder: string)
+2. open_file: Open a file for editing or continued viewing; create it if it does not exist yet. Note: if you only need to read or write a file once, use `write_to_file` instead. Params: (file_path: string)
+3. open_folder: Open a folder to keep track of its content. Params: (path: string)
+4. read_file: Read an existing file. Params: (filename: string)
+5. write_file: Write a file, creating it if necessary. If the file exists, it is overwritten. Params: (filename: string, contents: string)
+6. finish: Use this to shut down once you have accomplished all of your goals, or when there are insurmountable problems that make it impossible for you to finish your task. Params: (reason: string)
 
 ## Best practices
 1. Continuously review and analyze your actions to ensure you are performing to the best of your abilities.
@@ -37,16 +32,17 @@ You have access to the following commands:
 
 ## Goals
 For your task, you must fulfill the following goals:
-1. You want to find the answer to a specific question using only information present in your workspace. \
-To do this, follow these steps:\
-1. create an empty file called "findings.txt" using the command write_file with filename="findings" and contents="".\
-2. list all files in your workspace using the command list_folder with folder = "./"\
-3. for every txt file in your workspace except "file_logger.txt", do these steps: {\
-    1. read the content of the file using read_file\
-    2. if the content is relevant to the question, open the file findings and add the relevant information and the file name to the file findings by using the command write_file with filename="findings" and contents=current content + relevant informations\
-    3. delete the current txt file from your context by using hide_context_item with number = the number of the current txt file.\
-}\
-4. When you have read every relevant txt file onces, open the file findings and present the answer to the user, including the files that were used to answer the question.'}, {'role': 'system', 'content': 'The current time and date is Wed Sep  6 14:17:57 2023'}, {'role': 'system', 'content': 'Respond strictly with JSON. The JSON should be compatible with the TypeScript type `Response` from the following:
+1. You want to find relevant information to a specific question q using only information present in a specified file f. It is not certain, if the file contains any relevant information. To check for relevant information, follow these steps:\
+1. open the specified file using the command open_file with file_path=f. Once you opened the file, the content is loaded into your context.\
+2. If the file contains relevant information for the question q, open the file "findings.txt". The content will be loaded into your context.\
+3. Add the relevant informations, if there is any, from file f by using the command write_file with filename="findings.txt" and the content should be exactly the content of the current file findings, plus an entry with the file name f and the relevant content. If there is no relevant information in file f, you are also done. You don\'t have to find a solution, you only have to analyze the content of file f with respect to the question. After that you are done.'}, {'role': 'system', 'content': '## Progress
+
+### Step 1: Executed `open_file(file_path=\'path/to/your/specified/file.txt\')`
+- **Reasoning:** "I will use the \'open_file\' command with the \'file_path\' argument set to the path of the specified file f."
+- **Status:** `error`
+- **Reason:** [Errno 2] No such file or directory: \'/workspace/Auto-GPT/auto_gpt_workspace/path/to/your/specified/file.txt\'
+- **Error:** [Errno 2] No such file or directory: \'/workspace/Auto-GPT/auto_gpt_workspace/path/to/your/specified/file.txt\'
+'}, {'role': 'system', 'content': 'The current time and date is Fri Sep  8 19:10:10 2023'}, {'role': 'system', 'content': 'Respond strictly with JSON. The JSON should be compatible with the TypeScript type `Response` from the following:
 ```ts
 interface Response {
 thoughts: {
@@ -65,5 +61,4 @@ name: string;
 args: Record<string, any>;
 };
 }
-```'}, {'role': 'user', 'content': 'Determine exactly one command to use next based on the given goals and the progress you have made so far, and respond using the JSON schema specified previously:'}]
-
+```'}, 
